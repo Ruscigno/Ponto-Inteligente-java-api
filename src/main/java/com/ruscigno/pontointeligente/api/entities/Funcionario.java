@@ -46,7 +46,7 @@ public class Funcionario implements Serializable {
 	private List<Lancamento> lancamentos;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {
 		return id;
 	}
@@ -95,7 +95,7 @@ public class Funcionario implements Serializable {
 	public BigDecimal getValorHora() {
 		return valorHora;
 	}
-	
+
 	@Transient
 	public Optional<BigDecimal> getValorHoraOpt() {
 		return Optional.ofNullable(valorHora);
@@ -105,16 +105,15 @@ public class Funcionario implements Serializable {
 		this.valorHora = valorHora;
 	}
 
-	@Column(name = "nome", nullable = false)
+	@Column(name = "qtd_horas_trabalho_dia", nullable = false)
 	public Float getQtHorasTrabalhoDia() {
 		return qtHorasTrabalhoDia;
 	}
 
-	@Column(name = "qtd_horas_trabalho_dia", nullable = true)
 	public void setQtHorasTrabalhoDia(Float qtHorasTrabalhoDia) {
 		this.qtHorasTrabalhoDia = qtHorasTrabalhoDia;
 	}
-	
+
 	@Transient
 	public Optional<Float> setQtHorasTrabalhoDiaOpt() {
 		return Optional.ofNullable(qtHorasTrabalhoDia);
@@ -124,7 +123,7 @@ public class Funcionario implements Serializable {
 	public Float getQtHorasAlmoco() {
 		return qtHorasAlmoco;
 	}
-	
+
 	@Transient
 	public Optional<Float> getQtHorasAlmocoOpt() {
 		return Optional.ofNullable(qtHorasAlmoco);
