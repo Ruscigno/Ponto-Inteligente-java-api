@@ -17,6 +17,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -26,27 +28,27 @@ import com.ruscigno.pontointeligente.api.enums.PerfilEnum;
 @Table(name = "funcionario")
 public class Funcionario implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2130648058002293772L;
-
+	private static final long serialVersionUID = -5754246207015712518L;
+	
 	private Long id;
 	private String nome;
 	private String email;
 	private String senha;
 	private String cpf;
 	private BigDecimal valorHora;
-	private Float qtHorasTrabalhoDia;
-	private Float qtHorasAlmoco;
+	private Float qtdHorasTrabalhoDia;
+	private Float qtdHorasAlmoco;
 	private PerfilEnum perfil;
 	private Date dataCriacao;
 	private Date dataAtualizacao;
 	private Empresa empresa;
 	private List<Lancamento> lancamentos;
 
+	public Funcionario() {
+	}
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
 	public Long getId() {
 		return id;
 	}
@@ -73,15 +75,6 @@ public class Funcionario implements Serializable {
 		this.email = email;
 	}
 
-	@Column(name = "senha", nullable = false)
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
 	@Column(name = "cpf", nullable = false)
 	public String getCpf() {
 		return cpf;
@@ -95,7 +88,7 @@ public class Funcionario implements Serializable {
 	public BigDecimal getValorHora() {
 		return valorHora;
 	}
-
+	
 	@Transient
 	public Optional<BigDecimal> getValorHoraOpt() {
 		return Optional.ofNullable(valorHora);
@@ -105,32 +98,32 @@ public class Funcionario implements Serializable {
 		this.valorHora = valorHora;
 	}
 
-	@Column(name = "qtd_horas_trabalho_dia", nullable = false)
-	public Float getQtHorasTrabalhoDia() {
-		return qtHorasTrabalhoDia;
+	@Column(name = "qtd_horas_trabalho_dia", nullable = true)
+	public Float getQtdHorasTrabalhoDia() {
+		return qtdHorasTrabalhoDia;
 	}
-
-	public void setQtHorasTrabalhoDia(Float qtHorasTrabalhoDia) {
-		this.qtHorasTrabalhoDia = qtHorasTrabalhoDia;
-	}
-
+	
 	@Transient
-	public Optional<Float> setQtHorasTrabalhoDiaOpt() {
-		return Optional.ofNullable(qtHorasTrabalhoDia);
+	public Optional<Float> getQtdHorasTrabalhoDiaOpt() {
+		return Optional.ofNullable(qtdHorasTrabalhoDia);
+	}
+
+	public void setQtdHorasTrabalhoDia(Float qtdHorasTrabalhoDia) {
+		this.qtdHorasTrabalhoDia = qtdHorasTrabalhoDia;
 	}
 
 	@Column(name = "qtd_horas_almoco", nullable = true)
-	public Float getQtHorasAlmoco() {
-		return qtHorasAlmoco;
+	public Float getQtdHorasAlmoco() {
+		return qtdHorasAlmoco;
 	}
-
+	
 	@Transient
-	public Optional<Float> getQtHorasAlmocoOpt() {
-		return Optional.ofNullable(qtHorasAlmoco);
+	public Optional<Float> getQtdHorasAlmocoOpt() {
+		return Optional.ofNullable(qtdHorasAlmoco);
 	}
 
-	public void setQtHorasAlmoco(Float qtHorasAlmoco) {
-		this.qtHorasAlmoco = qtHorasAlmoco;
+	public void setQtdHorasAlmoco(Float qtdHorasAlmoco) {
+		this.qtdHorasAlmoco = qtdHorasAlmoco;
 	}
 
 	@Enumerated(EnumType.STRING)
@@ -161,6 +154,15 @@ public class Funcionario implements Serializable {
 		this.dataAtualizacao = dataAtualizacao;
 	}
 
+	@Column(name = "senha", nullable = false)
+	public String getSenha() {
+		return senha;
+	}
+	
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	public Empresa getEmpresa() {
 		return empresa;
@@ -178,9 +180,25 @@ public class Funcionario implements Serializable {
 	public void setLancamentos(List<Lancamento> lancamentos) {
 		this.lancamentos = lancamentos;
 	}
+	
+	@PreUpdate
+    public void preUpdate() {
+        dataAtualizacao = new Date();
+    }
+     
+    @PrePersist
+    public void prePersist() {
+        final Date atual = new Date();
+        dataCriacao = atual;
+        dataAtualizacao = atual;
+    }
 
-	public Funcionario() {
-		// TODO Auto-generated constructor stub
+	@Override
+	public String toString() {
+		return "Funcionario [id=" + id + ", nome=" + nome + ", email=" + email + ", senha=" + senha + ", cpf=" + cpf
+				+ ", valorHora=" + valorHora + ", qtdHorasTrabalhoDia=" + qtdHorasTrabalhoDia + ", qtdHorasAlmoco="
+				+ qtdHorasAlmoco + ", perfil=" + perfil + ", dataCriacao="
+				+ dataCriacao + ", dataAtualizacao=" + dataAtualizacao + ", empresa=" + empresa + "]";
 	}
 
 }
