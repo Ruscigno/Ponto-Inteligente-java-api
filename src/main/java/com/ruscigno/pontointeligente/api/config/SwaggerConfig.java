@@ -33,7 +33,7 @@ public class SwaggerConfig {
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.basePackage("com.kazale.pontointeligente.api.controllers"))
+				.apis(RequestHandlerSelectors.basePackage("com.ruscigno.pontointeligente.api.controllers"))
 				.paths(PathSelectors.any()).build()
 				.apiInfo(apiInfo());
 	}
@@ -48,7 +48,7 @@ public class SwaggerConfig {
 	public SecurityConfiguration security() {
 		String token;
 		try {
-			UserDetails userDetails = this.userDetailsService.loadUserByUsername("admin@kazale.com");
+			UserDetails userDetails = this.userDetailsService.loadUserByUsername("contact@ruscigno.com");
 			token = this.jwtTokenUtil.obterToken(userDetails);
 		} catch (Exception e) {
 			token = "";
